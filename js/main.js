@@ -1,6 +1,7 @@
 import * as THREE from 'three';
-import Rana from './rana.js';
-import Isla from './isla.js';
+import Rana from './Rana.js';
+import Roca from './Roca.js';
+import IA from './IA.js';
 
 var play = false;
 
@@ -18,71 +19,90 @@ renderer.setSize(canvasWidth, canvasHeight);
 document.body.appendChild(renderer.domElement);
 container.appendChild(renderer.domElement);
 
-// Events
-
 var n_Machos_input      = document.getElementById('nMachosInputRange');
 var n_Hembras_input     = document.getElementById('nHembrasInputRange');
 var n_Espacios_input    = document.getElementById('neEspaciosInputRange');
 var playBtn             = document.getElementById('playButton');
 
+var ranas       = [];
+var rocas       = [];
+var puzzle      = [];
+var posicion    = 0;
 
-var ranas  = [];
-var islas   = [];
-var position = 0;
-
+// M = Machos
+// H = Hembras
+// _ = espacio vacio
 
 function generarRanas(n_machos, n_hembras, n_espacios){
     let n = (n_machos + n_hembras + n_espacios);
+    let contador_id =1;
     for (let x = -n; x < n; x+=2) {
-        if (position < n_machos) {
-            ranas.push(new Rana(x, 0, position, null));
-            islas.push(new Isla(x));
-            position++;
-        } else if (position >= n_machos && position < (n_machos + n_espacios)) {
-            islas.push(new Isla(x));
-            position++;
+        if (posicion < n_machos) {
+            ranas.push(new Rana(x, 0, x, null));
+            rocas.push(new Roca(x));
+            
+            puzzle.push({
+                id_rana: `RM${contador_id}`, 
+                tipo: '*', 
+                posicion,
+                pos_inicial: posicion,
+                pos_final: posicion*-1 
+            });
+
+            posicion++;
+            contador_id++;
+        } else if (posicion >= n_machos && posicion < (n_machos + n_espacios)) {
+            rocas.push(new Roca(x));
+
+            puzzle.push({
+                tipo: '_',
+                posicion,
+                is_vacio:true
+            });
+
+            posicion++;
+            contador_id++;
         } else{
-            ranas.push(new Rana(x, 0, position, null));
-            islas.push(new Isla(x));
-            position++;
+            ranas.push(new Rana(x, 0, x, null));
+            rocas.push(new Roca(x));
+
+            puzzle.push({
+                id_rana: `RM${contador_id}`,
+                tipo: '*',
+                posicion,
+                pos_inicial: posicion,
+                pos_final: posicion * -1
+            });
+
+            posicion++;
+            contador_id++;
         }
     }
 }
-function generarIslasEspacios(n){
-      
-
-    for (let index = 0; index < n; index++) {
-
-        
-    }
-}
-
-
 
 function agregarRanasEscena(){
     ranas.forEach( item => scene.add(item.getRana()));
-    islas.forEach( item => scene.add(item.getIsla()));
+    rocas.forEach( item => scene.add(item.getRoca()));
 }
 function limpiarEscena(){
     ranas.forEach( item => scene.remove(item.getRana()));
-    islas.forEach( item => scene.remove(item.getIsla()));
+    rocas.forEach( item => scene.remove(item.getRoca()));
     ranas   = [];
-    islas   = [];
-    position = 0;
+    rocas   = [];
+    posicion = 0;
 }
 
 
 playBtn.addEventListener('click', ()=>{
-    limpiarEscena();
-    generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
-    agregarRanasEscena();
-    
+    // limpiarEscena();
+    // generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
+    // agregarRanasEscena();
+
+    ranas[2].activarParaMover();
     play = true;
 })
 
 generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
-var rana = ranas[ranas.length - 1]
-
 agregarRanasEscena();
 
 camera.position.z = 5;
@@ -90,8 +110,8 @@ camera.position.z = 5;
 
 function animate() {
     requestAnimationFrame(animate);
-    if (play){
-        ranas[ranas.length - 1].mover_izquierda_un_paso();
+    if (play && ranas[2].getEnMovimiento()){
+        ranas[2].mover_izquierda_dos_pasos();
     }
     renderer.render(scene, camera);
 };

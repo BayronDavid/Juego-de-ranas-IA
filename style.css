@@ -6,8 +6,8 @@ body {
     overflow: hidden;
 }
 
-#canvas{
-    overflow-x: auto;
+.item{
+    overflow: auto;
 }
 
 .main-container {
