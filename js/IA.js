@@ -3,11 +3,13 @@ import Nodo from "./Nodo.js";
 export default class IA{
 
     constructor (puzzle){
-        this.puzzle = puzzle;
-        this.estadoInicial = new Nodo(puzzle[0]);
+        this.puzzle         = puzzle;
+        this.estadoInicial  = new Nodo(puzzle[0]);
         
-        this.cerrado     = [estadoInicial];
-        this.frontera    = [estadoInicial];
+        this.cerrado     = [this.estadoInicial];
+        this.frontera    = [this.estadoInicial];
+
+        console.log(puzzle);
     }
 
     BPA(){
@@ -61,6 +63,10 @@ export default class IA{
     expandir(nodo_actual){
         let lista_nodos = [];
         let tipo = nodo_actual.tipo;
+
+        if(nodo_actual.es_vacio){
+            return null;
+        }
 
         if (validarjugada(nodo_actual, tipo, 'd1')){ // mover un paso a la derecha
             let nodo = Nodo(this.puzzle[nodo_actual.posicion+1]);

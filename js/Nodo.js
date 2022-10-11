@@ -1,5 +1,5 @@
 export default class Nodo {
-    constructor(){
+    constructor(rana){
         this.rana = rana || null;
 
         this.padre      = null;

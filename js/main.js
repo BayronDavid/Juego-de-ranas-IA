@@ -3,18 +3,19 @@ import Rana from './Rana.js';
 import Roca from './Roca.js';
 import IA from './IA.js';
 
+
 var play = false;
 
-var container = document.getElementById('canvas');
-var canvasWidth = container.offsetWidth;
-var canvasHeight = container.offsetHeight;
+var container       = document.getElementById('canvas');
+var canvasWidth     = container.offsetWidth;
+var canvasHeight    = container.offsetHeight;
 
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(255, 255, 255)
-const camera = new THREE.OrthographicCamera(window.innerWidth / - 150, window.innerWidth / 150, window.innerHeight / 150, window.innerHeight / - 150, 1, 100);
+const scene         = new THREE.Scene();
+scene.background    = new THREE.Color(255, 255, 255)
+const camera        = new THREE.OrthographicCamera(window.innerWidth / - 150, window.innerWidth / 150, window.innerHeight / 150, window.innerHeight / - 150, 1, 100);
 
-const renderer = new THREE.WebGLRenderer();
+const renderer      = new THREE.WebGLRenderer();
 renderer.setSize(canvasWidth, canvasHeight);
 document.body.appendChild(renderer.domElement);
 container.appendChild(renderer.domElement);
@@ -50,25 +51,25 @@ function generarRanas(n_machos, n_hembras, n_espacios){
             });
 
             posicion++;
-            contador_id++;
+            contador_id = contador_id>3?1: contador_id+=1 ;
+
         } else if (posicion >= n_machos && posicion < (n_machos + n_espacios)) {
             rocas.push(new Roca(x));
 
             puzzle.push({
                 tipo: '_',
                 posicion,
-                is_vacio:true
+                es_vacio:true
             });
 
             posicion++;
-            contador_id++;
         } else{
             ranas.push(new Rana(x, 0, x, null));
             rocas.push(new Roca(x));
 
             puzzle.push({
                 id_rana: `RM${contador_id}`,
-                tipo: '*',
+                tipo: '+',
                 posicion,
                 pos_inicial: posicion,
                 pos_final: posicion * -1
@@ -97,6 +98,11 @@ playBtn.addEventListener('click', ()=>{
     // limpiarEscena();
     // generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
     // agregarRanasEscena();
+
+    let inteligencia_artificial = new IA(puzzle);
+    
+    inteligencia_artificial.BPA(puzzle);
+    
 
     ranas[2].activarParaMover();
     play = true;
