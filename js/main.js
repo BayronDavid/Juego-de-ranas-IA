@@ -46,8 +46,8 @@ function generarRanas(n_machos, n_hembras, n_espacios){
                 id_rana: `RM${contador_id}`, 
                 tipo: '*', 
                 posicion,
-                pos_inicial: posicion,
-                pos_final: posicion*-1 
+                pos_inicial: x,
+                pos_final: x*-1 
             });
 
             posicion++;
@@ -71,8 +71,8 @@ function generarRanas(n_machos, n_hembras, n_espacios){
                 id_rana: `RM${contador_id}`,
                 tipo: '+',
                 posicion,
-                pos_inicial: posicion,
-                pos_final: posicion * -1
+                pos_inicial: x,
+                pos_final: x * -1
             });
 
             posicion++;
@@ -101,7 +101,7 @@ playBtn.addEventListener('click', ()=>{
 
     let inteligencia_artificial = new IA(puzzle);
     
-    inteligencia_artificial.BPA(puzzle);
+    console.log(inteligencia_artificial.BPA(puzzle));;
     
 
     ranas[2].activarParaMover();

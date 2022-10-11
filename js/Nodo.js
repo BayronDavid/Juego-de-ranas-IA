@@ -2,10 +2,11 @@ export default class Nodo {
     constructor(rana){
         this.rana = rana || null;
 
-        this.padre      = null;
+        this.padre      = rana;
         this.estado     = this.rana.posicion;
         this.accion     = '';
         this.expandido  = false;
+        this.llego      = false;
 
     }
 

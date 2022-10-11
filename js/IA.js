@@ -8,21 +8,22 @@ export default class IA{
         
         this.cerrado     = [this.estadoInicial];
         this.frontera    = [this.estadoInicial];
-
-        console.log(puzzle);
     }
 
     BPA(){
-        for(n=0; n<this.frontera.length; n++){
-            let nodo_actual = this.frontera[0];
 
-            if(!nodo_actual.getExpandido){
+        for(let n=0; n<this.frontera.length; n++){
+            let nodo_actual = this.frontera[0];
+            if(!nodo_actual.getExpandido()){
+
                 if(!this.testObjetivo(nodo_actual)){
                     let expansion =  this.expandir(nodo_actual);
 
+                    
                     nodo_actual.setExpandido(true)
-
-                    if(expansion){
+                    
+                    console.log('expansion', expansion.length);
+                    if(expansion.length != 0){
                         for (let nodo_expandido = 0; nodo_expandido < expansion.length; nodo_expandido++) {
                             let bandera = false;
                             
@@ -51,13 +52,28 @@ export default class IA{
                 }
             }
         }
+        return null;
     }
 
     testObjetivo(nodo_actual){
         if(nodo_actual.estado == nodo_actual.rana.pos_final){
+            nodo_actual.llego = true;
+            this.puzzle.pop(nodo_actual.estado)
             return true;
         }
         return false;
+    }
+
+    solucionar(metodo_busqueda){
+        while(this.puzzle.length > 2){
+            for (let i = 0; i < this.puzzle.length; i++) {
+                let nodo = new Nodo(puzzle[i]);
+
+                this.cerrado    = [nodo];
+                this.frontera   = [nodo];
+                this.BPA();
+            }
+        }
     }
 
     expandir(nodo_actual){
@@ -65,28 +81,29 @@ export default class IA{
         let tipo = nodo_actual.tipo;
 
         if(nodo_actual.es_vacio){
+            console.log('Es vacio');
             return null;
         }
 
-        if (validarjugada(nodo_actual, tipo, 'd1')){ // mover un paso a la derecha
+        if (this.validarJugada(nodo_actual, tipo, 'd1')){ // mover un paso a la derecha
             let nodo = Nodo(this.puzzle[nodo_actual.posicion+1]);
             nodo.setPadre(nodo_actual);
             nodo.setAccion('d1');
             lista_nodos.push(nodo);
         }
-        if (validarjugada(nodo_actual, tipo, 'd2')) { // mover dos pasos a la derecha
+        if (this.validarJugada(nodo_actual, tipo, 'd2')) { // mover dos pasos a la derecha
             let nodo = Nodo(this.puzzle[nodo_actual.posicion + 2]);
             nodo.setPadre(nodo_actual);
             nodo.setAccion('d2');
             lista_nodos.push(nodo);
         }
-        if (validarjugada(nodo_actual, tipo, 'i1')) { // mover un paso a la izquiera
+        if (this.validarJugada(nodo_actual, tipo, 'i1')) { // mover un paso a la izquiera
             let nodo = Nodo(this.puzzle[nodo_actual.posicion - 1]);
             nodo.setPadre(nodo_actual);
             nodo.setAccion('i1');
             lista_nodos.push(nodo);
         }
-        if (validarjugada(nodo_actual, tipo, 'i2')) { // mover dos pasos a la izquiera
+        if (this.validarJugada(nodo_actual, tipo, 'i2')) { // mover dos pasos a la izquiera
             let nodo = Nodo(this.puzzle[nodo_actual.posicion - 2]);
             nodo.setPadre(nodo_actual);
             nodo.setAccion('i2');
@@ -95,7 +112,7 @@ export default class IA{
         return lista_nodos;
     }
 
-    validarjugada(nodo_actual, tipo, direccion){
+    validarJugada(nodo_actual, tipo, direccion){
         let pos = nodo_actual.posicion;
 
         switch(direccion){
