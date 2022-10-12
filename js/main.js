@@ -101,10 +101,11 @@ playBtn.addEventListener('click', ()=>{
 
     let inteligencia_artificial = new IA(puzzle);
     
-    console.log(inteligencia_artificial.BPA(puzzle));;
+    // console.log(inteligencia_artificial.BPA(puzzle));
+    inteligencia_artificial.solucionar(puzzle);
     
 
-    ranas[2].activarParaMover();
+    // ranas[2].activarParaMover();
     play = true;
 })
 
@@ -116,9 +117,9 @@ camera.position.z = 5;
 
 function animate() {
     requestAnimationFrame(animate);
-    if (play && ranas[2].getEnMovimiento()){
-        ranas[2].mover_izquierda_dos_pasos();
-    }
+    // if (play && ranas[2].getEnMovimiento()){
+    //     ranas[2].mover_izquierda_dos_pasos();
+    // }
     renderer.render(scene, camera);
 };
 

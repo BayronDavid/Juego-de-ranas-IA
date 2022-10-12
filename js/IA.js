@@ -11,32 +11,31 @@ export default class IA{
     }
 
     BPA(){
-
         for(let n=0; n<this.frontera.length; n++){
+            let acciones    = []; 
             let nodo_actual = this.frontera[0];
             if(!nodo_actual.getExpandido()){
-
                 if(!this.testObjetivo(nodo_actual)){
                     let expansion =  this.expandir(nodo_actual);
-
-                    
                     nodo_actual.setExpandido(true)
-                    
-                    console.log('expansion', expansion.length);
                     if(expansion.length != 0){
                         for (let nodo_expandido = 0; nodo_expandido < expansion.length; nodo_expandido++) {
-                            let bandera = false;
+
+                            acciones.push(expansion[nodo_expandido].accion);
+                            // let bandera = false;
                             
-                            for (let nodo_cerrado = 0; nodo_cerrado < this.cerrado.length; nodo_cerrado++) {
-                                if(this.cerrado[nodo_cerrado].estado == expansion[nodo_expandido].estado){
-                                    bandera = true;
-                                }
-                            }
-                            if(!bandera){
-                                this.cerrado.push(expansion[nodo_expandido]);
-                                this.frontera.push(expansion[nodo_expandido]);
-                            }
+                            // for (let nodo_cerrado = 0; nodo_cerrado < this.cerrado.length; nodo_cerrado++) {
+                            //     if(this.cerrado[nodo_cerrado].estado == expansion[nodo_expandido].estado){
+                            //         bandera = true;
+                            //     }
+                            // }
+                            // console.log(expansion[nodo_expandido]);
+                            // if(!bandera){
+                            //     this.cerrado.push(expansion[nodo_expandido]);
+                            //     this.frontera.push(expansion[nodo_expandido]);
+                            // }
                         }
+                        return acciones;
                     }
                 }else{
                     let acciones = [];
@@ -55,6 +54,18 @@ export default class IA{
         return null;
     }
 
+    solucionar(metodo_busqueda) {
+        // while(this.puzzle.length > 0){
+            for (let i = 0; i < this.puzzle.length; i++) {
+                let nodo = new Nodo(this.puzzle[i]);
+
+                this.cerrado    = [nodo];
+                this.frontera   = [nodo];
+                console.log(this.BPA());
+            }
+        // }
+    }
+
     testObjetivo(nodo_actual){
         if(nodo_actual.estado == nodo_actual.rana.pos_final){
             nodo_actual.llego = true;
@@ -64,21 +75,11 @@ export default class IA{
         return false;
     }
 
-    solucionar(metodo_busqueda){
-        while(this.puzzle.length > 2){
-            for (let i = 0; i < this.puzzle.length; i++) {
-                let nodo = new Nodo(puzzle[i]);
-
-                this.cerrado    = [nodo];
-                this.frontera   = [nodo];
-                this.BPA();
-            }
-        }
-    }
+    
 
     expandir(nodo_actual){
         let lista_nodos = [];
-        let tipo = nodo_actual.tipo;
+        let tipo = nodo_actual.rana.tipo;
 
         if(nodo_actual.es_vacio){
             console.log('Es vacio');
@@ -86,25 +87,25 @@ export default class IA{
         }
 
         if (this.validarJugada(nodo_actual, tipo, 'd1')){ // mover un paso a la derecha
-            let nodo = Nodo(this.puzzle[nodo_actual.posicion+1]);
+            let nodo = new  Nodo(this.puzzle[nodo_actual.estado+1]);
             nodo.setPadre(nodo_actual);
             nodo.setAccion('d1');
             lista_nodos.push(nodo);
         }
         if (this.validarJugada(nodo_actual, tipo, 'd2')) { // mover dos pasos a la derecha
-            let nodo = Nodo(this.puzzle[nodo_actual.posicion + 2]);
+            let nodo = new Nodo(this.puzzle[nodo_actual.estado + 2]);
             nodo.setPadre(nodo_actual);
             nodo.setAccion('d2');
             lista_nodos.push(nodo);
         }
         if (this.validarJugada(nodo_actual, tipo, 'i1')) { // mover un paso a la izquiera
-            let nodo = Nodo(this.puzzle[nodo_actual.posicion - 1]);
+            let nodo = new Nodo(this.puzzle[nodo_actual.estado - 1]);
             nodo.setPadre(nodo_actual);
             nodo.setAccion('i1');
             lista_nodos.push(nodo);
         }
         if (this.validarJugada(nodo_actual, tipo, 'i2')) { // mover dos pasos a la izquiera
-            let nodo = Nodo(this.puzzle[nodo_actual.posicion - 2]);
+            let nodo = new Nodo(this.puzzle[nodo_actual.estado - 2]);
             nodo.setPadre(nodo_actual);
             nodo.setAccion('i2');
             lista_nodos.push(nodo);
@@ -113,7 +114,7 @@ export default class IA{
     }
 
     validarJugada(nodo_actual, tipo, direccion){
-        let pos = nodo_actual.posicion;
+        let pos = nodo_actual.estado;
 
         switch(direccion){
             case 'd1':
@@ -134,7 +135,7 @@ export default class IA{
                 if (pos+2 < this.puzzle.length){ // que no se salga de la matriz
                     if(this.puzzle[pos+2].tipo == '_'){ // que la posicion de adelante este vacia
                         if (this.puzzle[pos + 3]) { // si existe una rana mas adelante
-                            if(this.puzzle[pos + 3] != tipo){ // evalua que la rana de mas adelante sea de diferente 
+                            if (this.puzzle[pos + 3] != tipo && this.puzzle[pos + 1] != tipo){ // evalua que la rana de mas adelante sea de diferente 
                                 return true; // Si la rana de mas adelante es de otro genero, avanza 
                             }                            
                         }else{
@@ -148,7 +149,7 @@ export default class IA{
                 if (pos - 1 >= 0) { // que no se salga de la matriz
                     if (this.puzzle[pos - 1].tipo == '_') { // que la posicion de adelante este vacia
                         if (this.puzzle[pos - 2]) { // si existe una rana mas adelante
-                            if (this.puzzle[pos - 2] != tipo) { // evalua que la rana de mas adelante sea de diferente 
+                            if (this.puzzle[pos - 2] != tipo && this.puzzle[pos - 1] != tipo) { // evalua que la rana de mas adelante sea de diferente 
                                 return true; // Si la rana de mas adelante es de otro genero, avanza 
                             }
                         } else {
@@ -159,7 +160,7 @@ export default class IA{
                 break;
 
             case 'i2':
-                if (pos - 2 < 0) { // que no se salga de la matriz
+                if (pos - 2 > 0) { // que no se salga de la matriz
                     if (this.puzzle[pos - 2].tipo == '_') { // que la posicion de adelante este vacia
                         if (this.puzzle[pos - 3]) { // si existe una rana mas adelante
                             if (this.puzzle[pos - 3] != tipo) { // evalua que la rana de mas adelante sea de diferente 
