@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import Rana from './Rana.js';
 import Roca from './Roca.js';
-import IA from './IA.js';
+import IA from './IA_test.js';
 
 
 var play = false;
@@ -28,7 +28,7 @@ var playBtn             = document.getElementById('playButton');
 var ranas       = [];
 var rocas       = [];
 var puzzle      = [];
-var posicion    = 0;
+var estado      = 0;
 
 // M = Machos
 // H = Hembras
@@ -38,46 +38,44 @@ function generarRanas(n_machos, n_hembras, n_espacios){
     let n = (n_machos + n_hembras + n_espacios);
     let contador_id =1;
     for (let x = -n; x < n; x+=2) {
-        if (posicion < n_machos) {
+        if (estado < n_machos) {
             ranas.push(new Rana(x, 0, x, null));
             rocas.push(new Roca(x));
             
             puzzle.push({
-                id_rana: `RM${contador_id}`, 
+                id: `RM${contador_id}`, 
                 tipo: '*', 
-                posicion,
+                estado: estado,
                 pos_inicial: x,
                 pos_final: x*-1 
             });
-
-            posicion++;
+            
             contador_id = contador_id>3?1: contador_id+=1 ;
-
-        } else if (posicion >= n_machos && posicion < (n_machos + n_espacios)) {
+        } else if (estado >= n_machos && estado < (n_machos + n_espacios)) {
             rocas.push(new Roca(x));
 
             puzzle.push({
+                id: `_`,
                 tipo: '_',
-                posicion,
-                es_vacio:true
+                estado: estado,
+                pos_inicial: x,
+                pos_final: x * -1
             });
-
-            posicion++;
         } else{
+            contador_id = contador_id > 3 ? 1 : contador_id += 1;
             ranas.push(new Rana(x, 0, x, null));
             rocas.push(new Roca(x));
 
             puzzle.push({
-                id_rana: `RM${contador_id}`,
+                id: `RH${contador_id}`,
                 tipo: '+',
-                posicion,
+                estado: estado,
                 pos_inicial: x,
                 pos_final: x * -1
-            });
 
-            posicion++;
-            contador_id++;
+            });
         }
+        estado++;
     }
 }
 
@@ -90,19 +88,18 @@ function limpiarEscena(){
     rocas.forEach( item => scene.remove(item.getRoca()));
     ranas   = [];
     rocas   = [];
-    posicion = 0;
+    estado = 0;
 }
 
 
 playBtn.addEventListener('click', ()=>{
+    let aux =  puzzle;
     // limpiarEscena();
     // generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
     // agregarRanasEscena();
-
-    let inteligencia_artificial = new IA(puzzle);
-    
-    // console.log(inteligencia_artificial.BPA(puzzle));
-    inteligencia_artificial.solucionar(puzzle);
+    let inteligencia_artificial = new IA(aux);
+    console.log(inteligencia_artificial.BPA());
+    // inteligencia_artificial.solucionar(puzzle);
     
 
     // ranas[2].activarParaMover();

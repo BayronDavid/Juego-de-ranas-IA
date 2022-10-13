@@ -3,11 +3,9 @@ export default class Nodo {
         this.rana = rana || null;
 
         this.padre      = rana;
-        this.estado     = this.rana.posicion;
+        this.estado     = this.rana.estado;
         this.accion     = '';
         this.expandido  = false;
-        this.llego      = false;
-
     }
 
     setPadre(padre){
