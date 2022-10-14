@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Rana from './rana.js';
+import Rana from './Rana.js';
 import Roca from './Roca.js';
 import IA from './IA_test.js';
 // import IA from './IA.js';
