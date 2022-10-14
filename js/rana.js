@@ -1,10 +1,18 @@
 import * as THREE from 'three';
 
 export default class Rana{
-    constructor(x, y, position, color, id){
+    constructor(x, y, position, color, id, tipe_text){
         this.color      = color || new THREE.Color(0x00ff00);
         this.geometry   = new THREE.BoxGeometry(1, 1, 1);;
-        this.material   = new THREE.MeshBasicMaterial({ color: this.color });
+        
+        const texture = new THREE.TextureLoader().load(`../img/rana_${tipe_text}.png`);
+        texture.wrapS   = THREE.RepeatWrapping;
+        texture.wrapT   = THREE.RepeatWrapping;
+        texture.repeat.set(1, 1);
+
+        this.material   = new THREE.MeshBasicMaterial({ map: texture});
+
+
         this.position   = position;
 
         this.newRana(x, y);
