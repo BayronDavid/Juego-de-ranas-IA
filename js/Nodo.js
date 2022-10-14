@@ -8,7 +8,6 @@ export default class Nodo {
         this.puzzle     = puzzle;
         this.llego      = false;
         this.pos_relativa  = false;
-        
     }
 
     llego(){

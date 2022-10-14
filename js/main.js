@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import Rana from './Rana.js';
 import Roca from './Roca.js';
 import IA from './IA_test.js';
-// import IA from './IA.js';
+import Puzzle from './Puzzle.js';
 
 var play = false;
 
@@ -38,6 +38,7 @@ var id_ult_mov = '';
 var movimientos = '';
 
 
+
 function generarRanas(n_machos, n_hembras, n_espacios){
     let n = (n_machos + n_hembras + n_espacios);
     let contador_id =1;
@@ -45,39 +46,19 @@ function generarRanas(n_machos, n_hembras, n_espacios){
         if (estado < n_machos) {
             ranas.push(new Rana(x, 0, x, null, `RM${contador_id}`, 'https://i.postimg.cc/yYQzCMpN/rana-H.png'));
             rocas.push(new Roca(x));
-            
-            puzzle.push({
-                id: `RM${contador_id}`, 
-                tipo: '*', 
-                estado: estado,
-                pos_relativa: x,
-                pos_final: x*-1 
-            });
+            puzzle.push(new Puzzle(`RM${contador_id}`, '*', estado, x, x*-1));
             
             contador_id = contador_id>3?1: contador_id+=1 ;
         } else if (estado >= n_machos && estado < (n_machos + n_espacios)) {
             rocas.push(new Roca(x));
+            puzzle.push(new Puzzle(`___`, '_', estado, x, x * -1));
 
-            puzzle.push({
-                id: `___`,
-                tipo: '_',
-                estado: estado,
-                pos_relativa: x,
-                pos_final: x * -1
-            });
         } else{
             contador_id = contador_id > 3 ? 1 : contador_id += 1;
             ranas.push(new Rana(x, 0, x, null, `RH${contador_id}`, 'https://i.postimg.cc/1381mvbr/rana-M.png'));
             rocas.push(new Roca(x));
+            puzzle.push(new Puzzle(`RH${contador_id}`, '+', estado, x, x * -1));
 
-            puzzle.push({
-                id: `RH${contador_id}`,
-                tipo: '+',
-                estado: estado,
-                pos_relativa: x,
-                pos_final: x * -1
-
-            });
         }
         estado++;
     }
@@ -106,7 +87,7 @@ playBtn.addEventListener('click', ()=>{
     let aux = [].concat(puzzle);
     let inteligencia_artificial = new IA(aux, parseInt(n_Machos_input.value));
     movimientos = inteligencia_artificial.BPA()
-
+    console.log(movimientos);
     play = true;
 })
 
