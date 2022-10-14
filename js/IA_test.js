@@ -1,4 +1,7 @@
 // 62 468426601
+// Julián Gómez, Breidy Ospina, Bayrón Morales, Stephanya Gómez
+// Docente: Laura Cortes
+
 import Nodo from "./Nodo.js";
 
 export default class IA_test{

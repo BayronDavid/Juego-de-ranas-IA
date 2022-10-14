@@ -1,3 +1,6 @@
+// Julián Gómez, Breidy Ospina, Bayrón Morales, Stephanya Gómez
+// Docente: Laura Cortes
+
 import * as THREE from 'three';
 import Rana from './Rana.js';
 import Roca from './Roca.js';
