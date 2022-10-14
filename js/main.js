@@ -7,7 +7,6 @@ import Roca from './Roca.js';
 import IA from './IA_test.js';
 // import IA from './IA.js';
 
-
 var play = false;
 
 var container       = document.getElementById('canvas');
@@ -34,11 +33,10 @@ var rocas       = [];
 var puzzle      = [];
 var estado      = 0;
 
-var aux_rana = '';
+var movimiento_actual = '';
+var id_ult_mov = '';
+var movimientos = '';
 
-// M = Machos
-// H = Hembras
-// _ = espacio vacio
 
 function generarRanas(n_machos, n_hembras, n_espacios){
     let n = (n_machos + n_hembras + n_espacios);
@@ -94,76 +92,60 @@ function limpiarEscena(){
     rocas.forEach( item => scene.remove(item.getRoca()));
     ranas   = [];
     rocas   = [];
-    estado = 0;
+    puzzle  = []
+    estado  = 0;
+    movimiento_actual = '';
+    movimientos = '';
 }
 
-
 playBtn.addEventListener('click', ()=>{
-    // limpiarEscena();
-    // generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
-    // agregarRanasEscena();
-    // inteligencia_artificial.solucionar(puzzle);
-    
-    
-    // ranas[2].activarParaMover(2);
+    limpiarEscena();
+    generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
+    agregarRanasEscena();  
+
+    let aux = [].concat(puzzle);
+    let inteligencia_artificial = new IA(aux);
+    movimientos = inteligencia_artificial.BPA()
+
     play = true;
 })
 
-
-
 generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
-agregarRanasEscena();
+agregarRanasEscena(); 
 
 camera.position.z = 5;
 
-let aux = [].concat(puzzle);
-let inteligencia_artificial = new IA(aux);
-let movimientos = inteligencia_artificial.BPA()
-// console.log(movimientos);
-
 function mover(movimientos){
-    movimientos.forEach((mv)=>{
-        mv = mv.split(',');
-        for (let i = 0; i < ranas.length; i++) {
-            if(mv[0] == ranas[i].id){
-                if(ranas[i-1]){
-                    if (!ranas[i - 1].getEnMovimiento()) {
-                        ranas[i].activarParaMover(i); //Indice para activar o desactivar la animacion
+        if(movimientos){
+            for (let k = 0; k < movimientos.length; k++) {
+                let mv = movimientos[k].split(',');
+                for (let i = 0; i < ranas.length; i++) {
+                    if (mv[0] == ranas[i].id) {
+                        setTimeout(() => {
+                            id_ult_mov = ranas[i].id;
+                            movimiento_actual = mv[1];
+                            ranas[i].activarParaMover(i);
+                            movimientos.shift();
+                        }, 500)
+                        return movimientos;
                     }
-                }else{
-                    ranas[i].activarParaMover(i); //Indice para activar o desactivar la animacion
                 }
             }
-        }
-    })
-    
+        }    
 }
-// mover(movimientos);
 
 function animate() {
     requestAnimationFrame(animate);
     if(play){
-        mover(movimientos);
-    }
-    if (play && ranas[0].getEnMovimiento()){
-        ranas[0].mover_izquierda_dos_pasos();
-    }
-    if (play && ranas[1].getEnMovimiento()){
-        ranas[1].mover_izquierda_dos_pasos();
-    }
-    if (play && ranas[2].getEnMovimiento()){
-        ranas[2].mover_izquierda_dos_pasos();
-    }
-    if (play && ranas[3].getEnMovimiento()){
-        ranas[3].mover_izquierda_dos_pasos();
-    }
-    if (play && ranas[4].getEnMovimiento()){
-        ranas[4].mover_izquierda_dos_pasos();
-    }
-    if (play && ranas[5].getEnMovimiento()){
-        ranas[5].mover_izquierda_dos_pasos();
+        movimientos = mover(movimientos);
+        for (let i = 0; i < ranas.length; i++) {
+            if(ranas[i].getEnMovimiento()){
+                ranas[i].mover(movimiento_actual);
+            }
+        }
     }
     renderer.render(scene, camera);
 };
 
 animate();
+

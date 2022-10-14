@@ -60,7 +60,7 @@ export default class IA_test{
             nodo.rana   = nodo_actual.puzzle[e + 1];
             nodo.estado = e + 1;
             nodo.setPadre(nodo_actual.estado);
-            nodo.setAccion(`${nodo_actual.puzzle[e].id}, i1`);
+            nodo.setAccion(`${nodo_actual.puzzle[e].id},i1`);
 
             lista_nodos.push(nodo);
             return lista_nodos;
@@ -76,7 +76,7 @@ export default class IA_test{
             nodo.rana   = nodo_actual.puzzle[e + 2];
             nodo.estado = e + 1;
             nodo.setPadre(nodo_actual.estado);
-            nodo.setAccion(`${nodo_actual.puzzle[e].id}, i2`);
+            nodo.setAccion(`${nodo_actual.puzzle[e].id},i2`);
 
 
             lista_nodos.push(nodo);
@@ -95,7 +95,7 @@ export default class IA_test{
             nodo.rana   = nodo_actual.puzzle[e - 1];
             nodo.estado = e + 1;
             nodo.setPadre(nodo_actual.estado);
-            nodo.setAccion(`${nodo_actual.puzzle[e].id}, d1`);
+            nodo.setAccion(`${nodo_actual.puzzle[e].id},d1`);
 
             lista_nodos.push(nodo);
             return lista_nodos;
@@ -111,7 +111,7 @@ export default class IA_test{
             nodo.rana = nodo_actual.puzzle[e - 2];
             nodo.estado = e + 1;
             nodo.setPadre(nodo_actual.estado);
-            nodo.setAccion(`${nodo_actual.puzzle[e].id}, d2`);
+            nodo.setAccion(`${nodo_actual.puzzle[e].id},d2`);
             lista_nodos.push(nodo);
             return lista_nodos;
         }
