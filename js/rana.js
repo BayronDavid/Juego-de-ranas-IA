@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export default class Rana{
-    constructor(x, y, position, color){
+    constructor(x, y, position, color, id){
         this.color      = color || new THREE.Color(0x00ff00);
         this.geometry   = new THREE.BoxGeometry(1, 1, 1);;
         this.material   = new THREE.MeshBasicMaterial({ color: this.color });
@@ -16,13 +16,16 @@ export default class Rana{
         this.t  = 0; //Se inicia el tiempo a t = 0
         this.g  = 9.81; //Aceleración de gravedad
         this.steps  = 0.03; //Aumento del tiempo 
-
+        this.id = id;
         this.en_movimiento = false;
+
+        this.idice_mov = 990;
     }
 
     newRana(x, y){
         this.rana = new THREE.Mesh(this.geometry, this.material);
         this.rana.position.set(x, y, 0);
+        this.rana.name = this.id;
     }
 
     getRana(){
@@ -40,8 +43,11 @@ export default class Rana{
         return this.en_movimiento;
     }
 
-    activarParaMover(){ //setEnMovimiento
-        this.en_movimiento = true;
+    activarParaMover(indice){ //setEnMovimiento
+        if(this.indice != indice){
+            this.indice = indice;
+            this.en_movimiento = true;
+        }
     }
 
     parabolic_shot(v0, angulo0, xMax) {
@@ -76,6 +82,25 @@ export default class Rana{
     }
     mover_izquierda_un_paso(){
         this.parabolic_shot(4.6, 120, 2);
+    }
+
+    mover(direccion){
+        switch(direccion){
+            case 'd1':
+                this.mover_derecha_un_paso();
+                break;
+            case 'd2':
+                this.mover_derecha_dos_pasos();
+                break;
+            case 'i1':
+                this.mover_izquierda_un_paso();
+                break;
+            case 'i2':
+                this.mover_izquierda_dos_pasos();
+                break;
+            default: 
+                console.log('Error al mover');
+        }
     }
 
     logger(){

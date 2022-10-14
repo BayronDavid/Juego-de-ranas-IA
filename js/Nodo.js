@@ -1,11 +1,18 @@
 export default class Nodo {
-    constructor(rana){
-        this.rana = rana || null;
-
-        this.padre      = rana;
-        this.estado     = this.rana.estado;
+    constructor(puzzle){
+        this.rana       =  null;
+        this.padre      = '';
+        this.estado     = 0;
         this.accion     = '';
         this.expandido  = false;
+        this.puzzle     = puzzle;
+        this.llego      = false;
+        this.pos_relativa  = false;
+        
+    }
+
+    llego(){
+        this.rana.pos_relativa == this.rana.pos_final ? true:false;
     }
 
     setPadre(padre){
