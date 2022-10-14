@@ -28,31 +28,29 @@ Docente: Laura Cortes
         <div class="menu item">
             
             <div class="col  text-center">
-                <div class="m-2">
-                    <button id="playButton" type="button" class="btn btn-primary"> Play </button>
-                </div>
+
                 <h3>Ranas</h3>
                 <form class="m-2 p-2 d-flex justify-content-between border">
                     <label for="amountRange" class="form-label">Machos</label>
-                    <input id="nMachosInputRange" type="range" name="amountRange" min="1" max="10" value="3"
+                    <input id="nMachosInputRange" type="range" name="amountRange" min="1" max="5" value="3" step="2"
                         oninput="this.form.amountInput.value=this.value" />
-                    <input type="number" name="amountInput" min="1" max="10" value="3"
+                    <input type="number" name="amountInput" min="3" max="5" value="3" step="2"
                         oninput="this.form.amountRange.value=this.value" />
                 </form>
                 <form class="m-2 p-2 d-flex justify-content-between border">
                     <label for="amountRange" class="form-label">Hembras</label>
-                    <input id="nHembrasInputRange" type="range" name="amountRange" min="1" max="10" value="3"
+                    <input id="nHembrasInputRange" type="range" name="amountRange" min="1" max="5" value="3" step="2"
                         oninput="this.form.amountInput.value=this.value" />
-                    <input type="number" name="amountInput" min="1" max="10" value="3"
+                    <input type="number" name="amountInput" min="3" max="5" value="3" step="2"
                         oninput="this.form.amountRange.value=this.value" />
                 </form>
-                <form class="m-2 p-2 d-flex justify-content-between border">
+                <!-- <form class="m-2 p-2 d-flex justify-content-between border">
                     <label for="amountRange" class="form-label">Espacios</label>
                     <input id="neEspaciosInputRange" type="range" name="amountRange" min="1" max="10" value="1"
                         oninput="this.form.amountInput.value=this.value" />
                     <input type="number" name="amountInput" min="1" max="10" value="1"
                         oninput="this.form.amountRange.value=this.value" />
-                </form>
+                </form> -->
                 <div class="m-2 p-2 text-start border">
                     <div class="form-check">
                         <input id="radioButtonPrimeroEnAnchura" class="form-check-input" type="radio" name="flexRadioDefault"
@@ -62,27 +60,40 @@ Docente: Laura Cortes
                         </label>
                     </div>
                 </div>
-                
+                <div class="m-2">
+                    <button id="playButton" type="button" class="btn btn-primary"> Play </button>
+                </div>
             </div>
 
             <div class="card m-2">
                 <div class="card-header">
                     Pasos
                 </div>
-                <div class="card-body">
-                    <b>
-                        <h6 class="text-center" id="count"> </h6>
-                    </b>
-                    <p>
-                        <b>F: </b>  <br>
-                        <b>t: </b>  <br>
-                        <b>n: </b>  <br>
-                    </p>
+                <div class="row mt-1">
+                    <div class="col-3 text-center">
+                        <img class="img_rana" src="https://i.postimg.cc/1381mvbr/rana-M.png" alt="">
+                    </div>
+                    <div class="col-3">
+                        <b>RH </b>                      
+                    </div>
+                    <div class="col-3 text-center">
+                        <img class="img_rana" src="https://i.postimg.cc/yYQzCMpN/rana-H.png" alt="">
+                    </div>
+                    <div class="col-3">
+                        <b>RM </b> 
+                    </div>
+                </div>
+                <div class="m-1" id="pasos">
+
                 </div>
             </div>
             <div class="card m-2">
                 <div class="card-body">
-                    Participantes:
+                    <b>Participantes:</b>
+                    Julián Gómez, Breidy Ospina, Bayrón Morales, Stephanya Gómez
+                    <br>
+                    <b>Docente:</b> Laura Cortes
+                     
                 </div>
             </div>
         </div>

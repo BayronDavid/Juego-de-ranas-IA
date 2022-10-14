@@ -7,10 +7,6 @@ body {
     overflow: hidden;
 }
 
-.item{
-    overflow: auto;
-}
-
 .main-container {
     height: 99%;
     display: grid;
@@ -21,6 +17,13 @@ body {
 }
 
 .menu{
+    height: 100vh;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.img_rana{
+    height: 30px;
 }

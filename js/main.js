@@ -13,10 +13,9 @@ var container       = document.getElementById('canvas');
 var canvasWidth     = container.offsetWidth;
 var canvasHeight    = container.offsetHeight;
 
-
 const scene         = new THREE.Scene();
 scene.background    = new THREE.Color(255, 255, 255)
-const camera        = new THREE.OrthographicCamera(window.innerWidth / - 150, window.innerWidth / 150, window.innerHeight / 150, window.innerHeight / - 150, 1, 100);
+const camera        = new THREE.OrthographicCamera(window.innerWidth / - 150, window.innerWidth / 150, window.innerHeight / 150, window.innerHeight / - 100, 1, 100);
 
 const renderer      = new THREE.WebGLRenderer();
 renderer.setSize(canvasWidth, canvasHeight);
@@ -25,8 +24,9 @@ container.appendChild(renderer.domElement);
 
 var n_Machos_input      = document.getElementById('nMachosInputRange');
 var n_Hembras_input     = document.getElementById('nHembrasInputRange');
-var n_Espacios_input    = document.getElementById('neEspaciosInputRange');
+// var n_Espacios_input    = document.getElementById('neEspaciosInputRange');
 var playBtn             = document.getElementById('playButton');
+var pasos_box           = document.getElementById('pasos');
 
 var ranas       = [];
 var rocas       = [];
@@ -34,10 +34,9 @@ var puzzle      = [];
 var estado      = 0;
 
 var movimiento_actual = '';
-var id_ult_mov = '';
+var id_ult_mov  = '';
 var movimientos = '';
-
-
+var indice_mov  =  0;
 
 function generarRanas(n_machos, n_hembras, n_espacios){
     let n = (n_machos + n_hembras + n_espacios);
@@ -77,11 +76,13 @@ function limpiarEscena(){
     estado  = 0;
     movimiento_actual = '';
     movimientos = '';
+    indice_mov = 0;
+    pasos_box.innerHTML = '';
 }
 
 playBtn.addEventListener('click', ()=>{
     limpiarEscena();
-    generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
+    generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(1));
     agregarRanasEscena();  
 
     let aux = [].concat(puzzle);
@@ -89,36 +90,40 @@ playBtn.addEventListener('click', ()=>{
     movimientos = inteligencia_artificial.BPA()
     console.log(movimientos);
     play = true;
+
+    movimientos.forEach((e)=>{
+        let paso = document.createTextNode(` ${e.toString()}  `)
+        pasos_box.appendChild(paso);
+    })
 })
 
-generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(n_Espacios_input.value));
+generarRanas(parseInt(n_Machos_input.value), parseInt(n_Hembras_input.value), parseInt(1));
 agregarRanasEscena(); 
 
 camera.position.z = 5;
 
-function mover(movimientos){
-        if(movimientos){
-            for (let k = 0; k < movimientos.length; k++) {
-                let mv = movimientos[k].split(',');
-                for (let i = 0; i < ranas.length; i++) {
-                    if (mv[0] == ranas[i].id) {
-                        setTimeout(() => {
-                            id_ult_mov = ranas[i].id;
-                            movimiento_actual = mv[1];
-                            ranas[i].activarParaMover(i);
-                            movimientos.shift();
-                        }, 500)
-                        return movimientos;
-                    }
+function mover(){
+    if(movimientos && indice_mov< movimientos.length){
+        let mov = movimientos[indice_mov].split(',');
+        ranas.forEach((r)=>{
+            if(r.id == mov[0]){
+                r.activarParaMover(indice_mov);
+                movimiento_actual = mov[1]
+                if(r.getEnMovimiento()){
+                    return;
+                }else{
+                    indice_mov++;
+                    return;
                 }
             }
-        }    
+        })
+    }
 }
 
 function animate() {
     requestAnimationFrame(animate);
     if(play){
-        movimientos = mover(movimientos);
+        mover(movimientos);
         for (let i = 0; i < ranas.length; i++) {
             if(ranas[i].getEnMovimiento()){
                 ranas[i].mover(movimiento_actual);
