@@ -45,7 +45,7 @@ function generarRanas(n_machos, n_hembras, n_espacios){
     let contador_id =1;
     for (let x = -n; x < n; x+=2) {
         if (estado < n_machos) {
-            ranas.push(new Rana(x, 0, x, null, `RM${contador_id}`, 'M'));
+            ranas.push(new Rana(x, 0, x, null, `RM${contador_id}`, 'https://i.postimg.cc/yYQzCMpN/rana-H.png'));
             rocas.push(new Roca(x));
             
             puzzle.push({
@@ -69,7 +69,7 @@ function generarRanas(n_machos, n_hembras, n_espacios){
             });
         } else{
             contador_id = contador_id > 3 ? 1 : contador_id += 1;
-            ranas.push(new Rana(x, 0, x, null, `RH${contador_id}`, 'H'));
+            ranas.push(new Rana(x, 0, x, null, `RH${contador_id}`, 'https://i.postimg.cc/1381mvbr/rana-M.png'));
             rocas.push(new Roca(x));
 
             puzzle.push({

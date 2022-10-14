@@ -4,11 +4,11 @@
 import * as THREE from 'three';
 
 export default class Rana{
-    constructor(x, y, position, color, id, tipe_text){
+    constructor(x, y, position, color, id, url_texture){
         this.color      = color || new THREE.Color(0x00ff00);
         this.geometry   = new THREE.BoxGeometry(1, 1, 1);;
         
-        const texture = new THREE.TextureLoader().load(`../img/rana_${tipe_text}.png`);
+        const texture = new THREE.TextureLoader().load(url_texture);
         texture.wrapS   = THREE.RepeatWrapping;
         texture.wrapT   = THREE.RepeatWrapping;
         texture.repeat.set(1, 1);
