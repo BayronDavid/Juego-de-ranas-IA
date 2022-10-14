@@ -6,10 +6,10 @@ import Nodo from "./Nodo.js";
 
 export default class IA_test{
 
-    constructor (puzzle, pasos){
+    constructor (puzzle, pos_espacio){
         this.estadoInicial          = new Nodo(puzzle);
-        this.estadoInicial.rana     = new Nodo(puzzle[3]);
-        this.estadoInicial.estado   = 3;
+        this.estadoInicial.rana     = new Nodo(puzzle[pos_espacio]);
+        this.estadoInicial.estado   = pos_espacio;
         
         this.cerrado     = [this.estadoInicial];
         this.frontera    = [this.estadoInicial];
@@ -77,7 +77,6 @@ export default class IA_test{
             nodo.estado = e + 1;
             nodo.setPadre(nodo_actual.estado);
             nodo.setAccion(`${nodo_actual.puzzle[e].id},i2`);
-
 
             lista_nodos.push(nodo);
             return lista_nodos;

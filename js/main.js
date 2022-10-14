@@ -104,7 +104,7 @@ playBtn.addEventListener('click', ()=>{
     agregarRanasEscena();  
 
     let aux = [].concat(puzzle);
-    let inteligencia_artificial = new IA(aux);
+    let inteligencia_artificial = new IA(aux, parseInt(n_Machos_input.value));
     movimientos = inteligencia_artificial.BPA()
 
     play = true;
